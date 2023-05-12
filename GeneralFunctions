@@ -1,0 +1,177 @@
+#include <iostream>
+using namespace std;
+using namespace CheckerMech;
+
+namespace GeneralFunctions{
+
+void rules(){
+  
+  bool wrong = false;
+
+  while (true){
+
+    cout << "\033[H\033[2J\033[3J";
+
+    char input;
+
+    if (wrong){
+      cout << "Not a valid input." << endl << endl;
+    }
+
+    cout << "     ''Checkers (American English), also known as draughts (British English), is a group of strategy board games for two players which involve diagonal moves of uniform game pieces and mandatory captures by jumping over opponent pieces.,," << endl << "          -Wikipedia." << endl << endl << "     Moves must be given to the computer in the form 'number+letter number+letter' (ex: 6B 5C). The first coordinates are the piece you want to move, and the second are the area you want it to go to. I haven't tried it, but if you name a a) piece at a coordinate that doesn't exist, b) a destination that is already occupied, or c) a location that doesn't exist at all, it'll probably throw an error so, don't do that (unless you want to)." << endl << "     There is currently no turn mechanism. I may or may not build in a turn tracker before I turn this in, but it wouldn't put in any rules. Keep track of it yourself." << endl << endl << "     Press 'X' to quit." << endl;
+
+  cin >> input;
+
+    if (input == 'x' || input == 'X'){
+      break;
+    } else {
+      wrong = true;
+    }
+    
+  }
+
+}
+
+void skip (vector<Checker> &checkerBoard, int startY, int startX, int destinationY, int destinationX){
+  int midPieceY;
+  int midPieceX;
+
+  midPieceY = (startY + destinationY) / 2;
+  midPieceX = (startX + destinationX) / 2;
+
+  for (int i = 0; i < checkerBoard.size(); i++){
+    if (checkerBoard.at(i).get_y_coord() == midPieceY && checkerBoard.at(i).get_x_coord() == midPieceX){
+      checkerBoard.erase(checkerBoard.begin() + i);
+      break;
+    }
+  }
+}
+
+bool victory(vector<Checker> checkerBoard){
+  int blackCounter;
+  int whiteCounter;
+
+  for (int i = 0; i < checkerBoard.size(); i++){
+    if (checkerBoard.at(i).get_color() == "BLACK"){
+      blackCounter++;
+    } else {
+      whiteCounter++;
+    }
+  }
+
+  if (blackCounter == 0 || whiteCounter == 0){
+    return true;
+  } else {
+    return false;
+  }
+  
+}
+
+void move(string start, string destination, vector <Checker> &checkerBoard){
+
+  int startY = start.front() - '0';
+  int startX = int(start.back()) - 64;
+
+  int destinationY = destination.front() - '0';
+  int destinationX = int(destination.back()) - 64;
+
+  for (int i = 0; i < checkerBoard.size(); i++){
+    if (checkerBoard.at(i).get_y_coord() == startY && checkerBoard.at(i).get_x_coord() == startX){
+      checkerBoard.at(i).set_y_coord(destinationY);
+      checkerBoard.at(i).set_x_coord(destinationX);
+    }
+  }
+
+  if(startY > destinationY){
+    if (startY - destinationY > 1){
+      skip(checkerBoard, startY, startX, destinationY, destinationX);
+    }
+  } else if (startY < destinationY){
+    if (destinationY - startY > 1){
+      skip(checkerBoard, startY, startX, destinationY, destinationX);
+    }
+  }
+  
+}
+
+void sort_board (vector <Checker>& checkerBoard){
+
+  vector <Checker> sorted;
+
+  int first = 0;
+  
+
+  for (int i = 8; i > 0; i--){
+    int objectsInRow = 0;
+    for (int j = 0; j < checkerBoard.size(); j++){
+      
+      if (checkerBoard.at(j).get_y_coord() == i){
+        objectsInRow++;
+      }
+    
+    }
+    for (int j = objectsInRow; j >.0; j--){
+      for (int k = 0; k < checkerBoard.size(); k++){
+        if (checkerBoard.at(k).get_y_coord() == i){
+          first = k;
+        }
+      }
+      for (int k = 0; k < checkerBoard.size(); k++){
+
+        if (checkerBoard.at(k).get_y_coord() == i){
+          if (checkerBoard.at(k).get_x_coord() < checkerBoard.at(first).get_x_coord()){
+            first = k;
+          }
+          
+        }
+        
+      }
+
+
+      sorted.push_back(checkerBoard.at(first));
+      checkerBoard.erase(checkerBoard.begin() + first);
+
+    }
+  }
+
+  for (int i = 0; i < sorted.size(); i++){
+
+    checkerBoard.push_back(sorted.at(i));
+    
+  }
+  
+}
+
+void print_board(vector <Checker> checkerBoard){
+
+  int increment = 0;
+
+  cout << "    A   B   C   D   E   F   G   H  " << endl;
+  cout << "  ┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl;
+
+  for (int i = 8; i > 0; i--){
+    cout << i << " │";
+    for (int j = 1; j <= 8; j++){
+      cout << " ";
+      if(increment < checkerBoard.size() && checkerBoard.at(increment).get_x_coord() == j && checkerBoard.at(increment).get_y_coord() == i){
+        cout << checkerBoard.at(increment).get_display();
+        increment++;
+      } else {
+        cout << " ";
+      }
+      cout << " │";
+
+    }
+    cout << " " << i << endl;
+    
+    if (i != 1) {
+      cout << "  ├───┼───┼───┼───┼───┼───┼───┼───┤" << endl;
+    }
+
+  }
+
+  cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘" << endl;
+  cout << "    A   B   C   D   E   F   G   H  " << endl << endl;
+  
+}
+}
