@@ -2,3 +2,6 @@
 main
 main-debug
 main.o
+MakeFile
+.replit
+replit.nix
