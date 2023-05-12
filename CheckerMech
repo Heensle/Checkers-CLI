@@ -1,0 +1,405 @@
+#include <string>
+#include <iostream>
+using namespace std;
+
+namespace CheckerMech{
+
+class Checker{
+
+  public:
+
+  Checker();
+  Checker(string color, int x_coord, int y_coord);
+
+  void advance_left();
+  void advance_right();
+
+  void skip_left();
+  void skip_right();
+
+  void set_x_coord(int x_coord);
+  void set_y_coord(int y_coord);
+  void set_display(string display);
+  void set_color(string color);
+  void select();
+  void unselect();
+
+  int get_x_coord() const;
+  char get_x_coord_display() const;
+  int get_y_coord() const;
+  string get_display() const;
+  string get_color() const;
+  bool get_selected() const;
+
+  void print_info() const;
+
+  private:
+
+  int x_coord;
+  char x_coord_display;
+  int y_coord;
+
+  string color;
+  string display;
+
+  bool selected;
+
+};
+
+Checker::Checker(){
+
+
+
+}
+
+Checker::Checker(string color, int x_coord, int y_coord){
+
+  this->color = color;
+  if (color == "BLACK"){
+    this->display = "○";
+  } else {
+    this->display = "●";
+  }
+
+  this->x_coord = x_coord;
+  this->x_coord_display = x_coord + 64;
+  this->y_coord = y_coord;
+
+  this->selected = false;
+
+}
+
+
+void Checker::advance_left(){
+
+  if (color == "BLACK"){
+    x_coord -= 1;
+    x_coord_display -= 1;
+    y_coord += 1;
+  } else {
+    x_coord -= 1;
+    x_coord_display -= 1;
+    y_coord -= 1;
+  }
+
+}
+
+void Checker::advance_right(){
+
+  if (color == "BLACK"){
+    x_coord += 1;
+    x_coord_display += 1;
+    y_coord += 1;
+  } else {
+    x_coord += 1;
+    x_coord_display += 1;
+    y_coord -= 1;
+  }
+
+}
+
+void Checker::skip_left(){
+
+  if (color == "BLACK"){
+    x_coord -= 2;
+    x_coord_display -= 2;
+    y_coord += 2;
+  } else {
+    x_coord -= 2;
+    x_coord_display -= 2;
+    y_coord -= 2;
+  }
+
+}
+
+void Checker::skip_right(){
+
+  if (color == "BLACK"){
+    x_coord += 2;
+    x_coord_display += 2;
+    y_coord += 2;
+  } else {
+    x_coord += 2;
+    x_coord_display += 2;
+    y_coord -= 2;
+  }
+
+}
+
+void Checker::set_x_coord(int x_coord){
+
+  this->x_coord = x_coord;
+  this->x_coord_display = x_coord + 64;
+
+}
+
+void Checker::set_y_coord(int y_coord){
+
+  this->y_coord = y_coord;
+
+}
+
+void Checker::set_display(string display){
+
+  this->display = display;
+
+}
+
+void Checker::set_color(string color){
+
+  this->color = color;
+
+}
+
+void Checker::select(){
+
+  selected = true;
+
+}
+
+void Checker::unselect(){
+
+  selected = false;
+
+}
+
+int Checker::get_x_coord() const{
+
+  return x_coord;
+
+}
+
+char Checker::get_x_coord_display() const {
+
+  return x_coord_display;
+
+} 
+
+int Checker::get_y_coord() const {
+
+  return y_coord;
+
+}
+
+string Checker::get_display() const {
+
+  return display;
+
+}
+
+string Checker::get_color() const {
+
+  return color;
+
+}
+
+bool Checker::get_selected() const {
+
+  return selected;
+
+}
+
+void Checker::print_info() const {
+
+  cout << display << ": " << "(" << y_coord << ", " << x_coord_display << ")" << endl;
+
+}
+
+class King{
+
+  public:
+
+  King(string color, int x_coord, int y_coord);
+
+  void move_up_left();
+  void move_up_right();
+  void move_down_left();
+  void move_down_right();
+
+  void skip_up_left();
+  void skip_up_right();
+  void skip_down_left();
+  void skip_down_right();
+
+  void set_x_coord(int x_coord);
+  void set_y_coord(int y_coord);
+  void set_color(string color);
+  void set_display(string display);
+  void select();
+  void unselect();
+
+  int get_x_coord() const;
+  char get_x_coord_display() const;
+  int get_y_coord() const;
+  string get_color() const;
+  string get_display() const;
+  bool get_selected() const;
+
+  private:
+
+  int x_coord;
+  char x_coord_display;
+  int y_coord;
+
+  string color;
+  string display;
+
+  bool selected;
+};
+
+King::King(string color, int x_coord, int y_coord){
+
+  this->color = color;
+  if (this->color == "BLACK"){
+    this->display = "◇";
+  } else {
+    this->display = "◆";
+  }
+
+  this->x_coord = x_coord;
+  this->x_coord_display = x_coord + 64;
+  this->y_coord = y_coord;
+
+  this->selected = false;
+
+}
+
+void King::move_up_left(){
+
+  this->y_coord += 1;
+  this->x_coord -= 1;
+  this->x_coord_display -= 1;
+
+}
+
+void King::move_up_right(){
+
+  this->y_coord += 1;
+  this->x_coord += 1;
+  this->x_coord_display += 1;
+
+}
+
+void King::move_down_left(){
+
+  this->y_coord -= 1;
+  this->x_coord -= 1;
+  this->x_coord_display -= 1;
+
+}
+
+void King::move_down_right(){
+
+  this->y_coord -= 1;
+  this->x_coord += 1;
+  this->x_coord_display += 1;
+
+}
+
+void King::skip_up_left(){
+
+  this->y_coord += 2;
+  this->x_coord -= 2;
+  this->x_coord_display -= 2;
+
+}
+
+void King::skip_up_right(){
+
+  this->y_coord += 2;
+  this->x_coord += 2;
+  this->x_coord_display += 2;
+
+}
+
+void King::skip_down_left(){
+
+  this->y_coord -= 2;
+  this->x_coord -= 2;
+  this->x_coord_display -= 2;
+
+}
+
+void King::skip_down_right(){
+
+  this->y_coord -= 2;
+  this->x_coord += 2;
+  this->x_coord_display += 2;
+
+}
+
+void King::set_x_coord(int x_coord){
+
+  this->x_coord = x_coord;
+  this->x_coord_display = x_coord + 64;
+
+}
+
+void King::set_y_coord(int y_coord){
+
+  this->y_coord = y_coord;
+
+}
+
+void King::set_color(string color){
+
+  this->color = color;
+
+}
+
+void King::set_display(string dislay){
+
+  this->display = display;
+
+}
+
+void King::select(){
+
+  this->selected = true;
+
+}
+
+void King::unselect(){
+
+  this->selected = false;
+
+}
+
+
+int King::get_x_coord() const{
+
+  return this->x_coord;
+
+}
+
+char King::get_x_coord_display() const{
+
+  return this->x_coord_display;
+
+}
+
+int King::get_y_coord() const{
+
+  return this->y_coord;
+
+}
+
+string King::get_color() const{
+
+  return this->color;
+
+}
+
+string King::get_display() const{
+
+  return this->display;
+
+}
+
+bool King::get_selected() const{
+
+  return this->selected;
+
+}
+
+}
