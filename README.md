@@ -7,3 +7,5 @@ Concepts I learned on this project:
 - Namespacing classes
 - To a degree, classes themselves
 - Various syntax conventions
+
+https://github.com/Heensle/Checkers-CLI
